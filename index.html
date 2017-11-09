@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> 
+    
+<!--    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">-->
+<!--   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+<style>
+
+.todo {
+float: right;
+border: 3px solid white;
+border-radius: 6px;
+color: white;   
+width: 20ch;
+height: 2.5em;
+    
+margin: 2px;
+cursor: pointer;
+}
+
+
+.firstline {
+    height: 1em;
+    text-align: center;
+    font-size: .9em;
+    margin: 1px 0;
+}
+
+.secondline {
+    height: 1.5em;
+}
+.secondlinetext {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background: black;
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    display: block;
+    outline: none;
+    border: none;
+    resize: none;
+    box-sizing: border-box;
+
+}
+
+
+
+    
+    
+    
+body {
+    cursor: crosshair;
+    background-color: black;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    width: 95vw;
+    height: 95vh;
+}
+
+
+    
+    .help {
+        color: #0074D9; margin-left: 2px; 
+        position: relative;
+    }
+    .appname {
+        color: white; 
+        padding: 2px 0 0 2px;
+    }
+    #count {
+        color:rgb(46,204,64);
+    }
+
+    
+    .info-group {
+        display: flex;
+        flex-direction: row;
+        
+    }
+    
+    
+    .popbelow {
+        display: none;
+        position: relative;
+        top: 8px;
+        left: -40px;
+        border: 1px solid white;
+        padding: 2px 3px 1px 1px;
+        margin: 0 0 15px 0;
+        border-radius: 8px;
+        color: white;
+        width: 300px;
+        
+    }
+    
+    .popbelow::before {
+        border-bottom: 7px solid white;
+        border-right: 7px solid transparent;
+        border-left: 7px solid transparent;
+        top: -7px;
+        content: '';
+        left: 40px;
+        position: absolute;
+    }
+    .icon {
+       display: inline;
+        cursor: help;
+        padding-left: 3px;
+    }
+    .help:hover .popbelow {
+        display: block !important;   
+    }
+    .fa:hover .popbelow {
+        display: block !important;   
+    }
+    
+    .popbelow ul {
+        margin: 0 0;
+        list-style-type: none;
+        padding: 3px 0 3px 5px;
+    }
+    .popbelow li {
+        padding-left: 10px;
+    }
+    
+    
+</style>
+
+    
+    </head>
+    
+    <body style='position: relative;'>
+        
+        <div class='info-group'> 
+            <div class='appname'> <span id='count'> 0 </span>  todo </div>
+
+
+            <div class='help'> 
+                <div class='icon'> <i class="fa fa-question-circle" aria-hidden="true"></i>  </div>
+                <div class='popbelow'>
+                    <ul> A simple todo app for minimalists:
+                        <li> - double-click anywhere to make a new todo </li>
+                        <li> - when typing, press shift + enter to jump to next line </li>
+                        <li> - double-click on todos when done </li>
+
+                    </ul>
+                </div>
+
+            </div>
+            
+        </div>
+   
+    
+<div id='main'></div>
+    
+
+</body>
+    
+    
+    
+
+    
+    
+    
+    
+<script src='autosize-master/dist/autosize.js'></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+
+    
+    
+    
+$(document).ready( function() {
+
+    
+    
+    
+//GLOBAL VARS
+var D = new Date();
+var COUNT = 0;
+    function updateCount() { 
+        $('#count').text(COUNT); 
+        if (COUNT == 0) {
+            $('#count').css('color','rgb(46,204,64)');
+        } else {
+            $('#count').css('color', 'rgb(255,65,54)');
+        }
+    }
+
+    $('body').dblclick(function(event) {
+
+        COUNT++;
+        updateCount();
+        var $todo = $('<div>', {'class': 'todo'});
+        $('#main').append($todo);
+        var $firstline = $('<div>', {'class': 'firstline'}); 
+
+        var month = D.getMonth() + 1;
+        var date = D.getDate();
+        var combine = '';
+        if (month > 9 && date > 9) {
+        combine = month + '/' + date;
+        }  else if (month > 9 && date <= 9) {
+        combine = month + '/0' + date;
+        } else if (month <= 9 && date <= 9) {
+        combine = '0' + month + '/0' + date;
+        } else {
+        combine = '0' + month + '/' + date;
+        }
+        $firstline.text(combine);
+
+        var $secondline = $('<div>', {'class': 'secondline'});
+        var $secondlinetext = $('<textarea>', {'class': 'secondlinetext'});
+        autosize($secondlinetext);
+        $secondline.append($secondlinetext);
+        $todo.append($firstline);
+        $todo.append($secondline);
+        $secondlinetext.focus();
+    });
+
+    $(document).on('click', '.todo', function(event) {
+        $(this).find('textarea').first().focus();
+    });
+
+$(document).on('mouseenter', '.secondlinetext', function() {
+    if (($(this).data('longform') !== undefined) && document.activeElement !== this) {
+        this.value = $(this).data('longform');
+        autosize(this);
+    }
+});
+    
+$(document).on('mouseleave', '.secondlinetext', function() {
+    if (($(this).data('shortform') !== undefined) && document.activeElement !== this) {
+        this.value = $(this).data('shortform');
+        autosize.destroy(this);
+    }
+});
+
+
+    
+    
+$(document).on('blur', '.secondlinetext', function() {
+    if (this.value.length == 0) {
+        $(this).parent().parent().remove();
+        COUNT--;
+        updateCount();
+    } 
+    (this).value = $(this).data('shortform');
+    autosize.destroy(this);
+});
+
+$(document).on('keyup', '.secondlinetext', function(event) {
+    var detail = this.value;
+    $(this).data('longform', detail)
+    if (detail.length > 18) {  detail = detail.substring(0, 17) + '+'; }
+
+    detail = detail.replace(/[\t\r\n\v\f]/g, '~')
+    $(this).data('shortform', detail);
+    
+    if (event.keyCode == '13' && event.shiftKey == false) {
+        
+        if (this.value.length < 2) { //empty text
+            $(this).parent().parent().remove();
+            COUNT--;
+            updateCount();
+        } else {
+            if (detail.length <= 18 && detail.substr(-1) !=='+') {  //remove last "enter"~ character, but not "more"+ character
+                var temp = $(this).data('shortform');
+                temp = temp.substring(0,(temp).length - 1);
+                $(this).data('shortform', temp);   
+            }
+            
+            this.value = $(this).data('shortform');    
+            $(this).blur();
+        }
+    } 
+ });
+
+$('#main').on('dblclick', '.todo', function(event) {
+    var boo = $(this).css('color') == 'rgb(46, 204, 64)';
+    if  (boo) {
+        
+        $(this).css('color','white');
+        $(this).css('border','3px solid white');
+        $(this).find('*').css('color','white');
+        $(this).find('textarea').first().css('border-bottom', '1px dashed white');
+        $(this).find('textarea').first().blur();
+        COUNT++;
+        updateCount();
+        event.stopPropagation();
+    } 
+    
+    var empty  = $(this).find('textarea').first().val() === ''; //make sure to not decrement COUNT if textarea's value is empty
+    if (!boo && !empty){
+        $(this).css('color','rgb(46,204,64)');
+        $(this).css('border','3px solid rgb(46,204,64)');
+        $(this).find('*').css('color','rgb(46,204,64)');
+        $(this).find('textarea').first().css('border-bottom', '1px dashed rgb(46,204,64)');
+        $(this).find('textarea').first().blur();
+        COUNT--;
+        updateCount();
+        event.stopPropagation();
+    }
+});
+    
+    $('#icon').on('click', function(event) {
+        //show Instructions
+        event.stopPropagation();
+        
+        
+    });
+    
+    $('#icon').on('dblclick', function(event) {
+        //prevent creating todo if double clicking Help
+        event.stopPropagation();
+    });
+
+    //FINAL wrap
+});    
+
+</script>
+
+
+
+
+</html>
+
+
