@@ -2,7 +2,7 @@
 ## The most minimal simplistic todo app that gets your TODO done!
 ## Run straight from on your browser
 ### USAGE:
-Just launch it (click [here](https://ngnnah.github.io/min_todo/)) and:
+Just launch it (click [here](https://ngnnah.github.io/js_min_todo/)) and:
 - double click anywhere to create a new todo
 - double click on any completed todo (Surprised? Yes, completed tasks turned green :!)
 - double click a completed todo to undo it
